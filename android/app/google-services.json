@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "187248474934",
+    "firebase_url": "https://waaqti-4real-default-rtdb.firebaseio.com",
+    "project_id": "waaqti-4real",
+    "storage_bucket": "waaqti-4real.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187248474934:android:0a1149b02bf61881261197",
+        "android_client_info": {
+          "package_name": "com.keynetik.waaqti"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM4HISiS8cwNj3zujN3L4GmQGe3Sc1h7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
