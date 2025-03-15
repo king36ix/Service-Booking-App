@@ -13,10 +13,11 @@ class SignUpScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Sign Up')),
       body: const Center(
         child: Padding(
-          padding: EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(24.0),
+    child: Form(
           child: SignUpForm(),
         ),
-      ),
+      ),),
     );
   }
 }

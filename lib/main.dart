@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'bizreg.dart';
+import 'servicebooking.dart';
 import 'package:waaqti/splashscreen.dart';
 import 'loginscreen.dart';
 import 'signupscreen.dart';
@@ -7,6 +9,7 @@ import 'onboarding.dart';
 import 'home.dart'; // Import your Home screen
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
 import 'firebase_options.dart';
+import 'bizreg.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +47,10 @@ class MyApp extends StatelessWidget {
         const SignUpScreen(), // Define the signup route
         '/home': (context) =>
         const SearchScreen(), // Define the home route
+        '/booking': (context) =>
+        Booking(),
+        '/bizreg': (context) =>
+            BizRegScreen(),
       },
     );
   }

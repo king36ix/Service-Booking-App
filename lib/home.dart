@@ -65,53 +65,74 @@ class LandingPageState extends State<SearchScreen> {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                      border: OutlineInputBorder(),
-                      suffixIcon: _searchController.text.isNotEmpty
-                          ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          setState(() {
-                            _searchResults = [];
-                          });
-                        },
-                      )
-                          : null,
+          Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24.0, 64.0, 24.0, 8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                        suffixIcon: _searchController.text.isNotEmpty
+                            ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            _searchController.clear();
+                            setState(() {
+                              _searchResults = [];
+                            });
+                          },
+                        )
+                            : IconButton(
+                          icon: const Icon(Icons.filter_alt),onPressed: () {
+                _searchController.clear();
+                setState(() {
+                _searchResults = [];
+                });},)
+                      ),
+                      onSubmitted: (value) => _performSearch(value),
                     ),
-                    onSubmitted: (value) => _performSearch(value),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    _performSearch(_searchController.text);
-                  },
-                ),
-              ],
+                  IconButton(
+                    splashColor:Color.from(alpha: 1, red: .75, green:0, blue:.75) ,
+                    color: Color.from(alpha: 1, red: .45, green:0, blue:.65),
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      _performSearch(_searchController.text);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
-          Expanded(
-            child: _searchResults.isEmpty
-                ? const Center(child: Text("No results found"))
-                : ListView.builder(
-              itemCount: _searchResults.length,
-              itemBuilder: (context, index) {
-                Map<String, dynamic> result = _searchResults[index];
-                return ListTile(
-                  title: Text(result['name'] ?? 'No Name'),
-                  subtitle: Text(result['description'] ?? ''), // Add more fields if needed
-                );
-              },
-            ),
+          Card(
+            elevation: 3,
+            child: Expanded(
+              child: _searchResults.isEmpty
+                  ? const Center(child: Text("No results found"))
+                  :   Card(
+                elevation: 3,child: ListView.builder(
+                itemCount: _searchResults.length,
+                itemBuilder: (context, index) {
+                  Map<String, dynamic> result = _searchResults[index];
+                  return ListTile(
+                    title: Text(result['name'] ?? 'No Name'),
+                    subtitle: Text(result['description'] ?? ''), // Add more fields if needed
+                  );
+                },
+              ),
+            ),),
+          ),
+      ElevatedButton(
+      onPressed: () => Navigator.of(context).pushNamed('/booking'),
+      child: const Text('Booking'),
+    ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pushNamed('/bizreg'),
+            child: const Text('BizReg'),
           ),
         ],
       ),

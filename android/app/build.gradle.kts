@@ -7,7 +7,8 @@ plugins {
 
 android {
     namespace = "com.keynetik.waaqti"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35 // ✅ Set explicit compileSdk version
+
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -20,11 +21,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.keynetik.waaqti"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        applicationId = "com.keynetik.waaqti" // ✅ Assign directly (No `.set()`)
+        minSdk = 23  // ✅ Assign directly (No `.set()`)
+        targetSdk = 34 // ✅ Assign directly (No `.set()`)
+        versionCode = 1 // ✅ Assign directly (No `.set()`)
+        versionName = "1.0" // ✅ Assign directly (No `.set()`)
     }
 
     buildTypes {
@@ -40,6 +41,6 @@ flutter {
 
 dependencies {
     implementation("androidx.multidex:multidex:2.0.1") // Prevent method limit issues
-    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
-    implementation("com.google.firebase:firebase-bom:32.7.2") // Firebase BOM for version management
+    implementation(platform("com.google.firebase:firebase-bom:32.7.2")) // Firebase BOM
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1") // Firebase Auth
 }
