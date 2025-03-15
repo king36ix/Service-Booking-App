@@ -19,7 +19,6 @@ class _BizRegScreenState extends State<BizRegScreen> {
 
   // Form fields
   String _name = '';
-  String _category = '';
   String _address = '';
   double _rating = 0.0;
   double? _latitude;
@@ -27,9 +26,11 @@ class _BizRegScreenState extends State<BizRegScreen> {
   File? _imageFile;
   bool _isSubmitting = false;
   bool _useCurrentLocation = false;
+  Set<String> _bizServices = {};
+
 
   // Predefined business categories
-  final List<String> _categories = ['Restaurant', 'Cafe', 'Retail', 'Entertainment', 'Services', 'Healthcare', 'Education', 'Other'];
+  final List<String> _categories = ['Manicure', 'Spa', 'Barber', 'Entertainment', 'Services', 'Healthcare', 'Education', 'Other'];
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class _BizRegScreenState extends State<BizRegScreen> {
                 SizedBox(height: 16),
                 _buildTextField('Business Name', Icons.business, (value) => _name = value!),
                 SizedBox(height: 16),
-                _buildDropdownField(),
+                _buildCategorySelector(),
                 SizedBox(height: 16),
                 _buildTextField('Address', Icons.location_on, (value) => _address = value!, maxLines: 2),
                 SizedBox(height: 16),
@@ -98,15 +99,33 @@ class _BizRegScreenState extends State<BizRegScreen> {
     );
   }
 
-  // Dropdown Category Selector
-  Widget _buildDropdownField() {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(labelText: 'Category', border: OutlineInputBorder(), prefixIcon: Icon(Icons.category)),
-      items: _categories.map((category) => DropdownMenuItem(value: category, child: Text(category))).toList(),
-      onChanged: (value) => setState(() => _category = value!),
-      validator: (value) => value == null ? 'Please select a category' : null,
+  // Multi-Checkbox Category Selector
+  Widget _buildCategorySelector() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Select Categories', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Column(
+          children: _categories.map((category) {
+            return CheckboxListTile(
+              title: Text(category),
+              value: _bizServices.contains(category),
+              onChanged: (bool? selected) {
+                setState(() {
+                  if (selected == true) {
+                    _bizServices.add(category);
+                  } else {
+                    _bizServices.remove(category);
+                  }
+                });
+              },
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
+
 
   // Toggle for using current location
   Widget _buildLocationSwitch() {
@@ -196,7 +215,15 @@ class _BizRegScreenState extends State<BizRegScreen> {
       _formKey.currentState!.save();
       if (_useCurrentLocation) await _getCurrentLocation();
       String? imageUrl = await _uploadImage();
-      await _firestore.collection('businesses').add({'name': _name, 'category': _category, 'address': _address, 'latitude': _latitude, 'longitude': _longitude, 'rating': _rating, 'imageUrl': imageUrl ?? ''});
+      await _firestore.collection('businesses').add({
+        'name': _name,
+        'categories': _bizServices.toList(), // Store as an array
+        'address': _address,
+        'latitude': _latitude,
+        'longitude': _longitude,
+        'rating': _rating,
+        'imageUrl': imageUrl ?? '',
+      });
       Navigator.pop(context);
     }
   }
