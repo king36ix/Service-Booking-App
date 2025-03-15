@@ -30,7 +30,7 @@ class _BizRegScreenState extends State<BizRegScreen> {
 
 
   // Predefined business categories
-  final List<String> _categories = ['Manicure', 'Spa', 'Barber', 'Entertainment', 'Services', 'Healthcare', 'Education', 'Other'];
+  final List<String> _categories = ['Manicure', 'Spa', 'Barber','Nails'];
 
   @override
   Widget build(BuildContext context) {
