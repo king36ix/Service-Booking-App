@@ -213,18 +213,39 @@ class _BizRegScreenState extends State<BizRegScreen> {
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      if (_useCurrentLocation) await _getCurrentLocation();
-      String? imageUrl = await _uploadImage();
-      await _firestore.collection('businesses').add({
-        'name': _name,
-        'categories': _bizServices.toList(), // Store as an array
-        'address': _address,
-        'latitude': _latitude,
-        'longitude': _longitude,
-        'rating': _rating,
-        'imageUrl': imageUrl ?? '',
-      });
-      Navigator.pop(context);
+      try {
+        if (_useCurrentLocation) await _getCurrentLocation();
+        String? imageUrl = await _uploadImage();
+
+        await _firestore.collection('businesses').add({
+          'name': _name,
+          'categories': _bizServices.toList(), // Store as an array
+          'address': _address,
+          'latitude': _latitude,
+          'longitude': _longitude,
+          'rating': _rating,
+          'imageUrl': imageUrl ?? '',
+        });
+
+        // Show success snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Business added successfully! 🎉'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        Navigator.pop(context); // Close form screen
+      } catch (e) {
+        // Show error snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
+
 }
